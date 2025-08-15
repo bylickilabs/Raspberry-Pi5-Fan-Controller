@@ -454,7 +454,7 @@ class FanApp:
         except Exception:
             pass
 
-        self.lang = "de"
+        self.lang = "en"
         self.running = False
         self.job = None
 
