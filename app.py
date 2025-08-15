@@ -51,7 +51,7 @@ LANG = {
         "btn_lang": "EN",
         "info_btn_close": "Schliessen",
         "info_text":
-            "Fan Controller (BYLICKILABS)\n\n"
+            "Fan Controller - ©Thorsten Bylicki | ©BYLICKILABS\n\n"
             "Funktionen:\n"
             "- Modi: Auto, 25%, 50%, 100%\n"
             "- RPM-Anzeige (falls verfuegbar)\n"
@@ -108,7 +108,7 @@ LANG = {
         "btn_lang": "DE",
         "info_btn_close": "Close",
         "info_text":
-            "Fan Controller (BYLICKILABS)\n\n"
+            "Fan Controller - ©Thorsten Bylicki | ©BYLICKILABS\n\n"
             "Features:\n"
             "- Modes: Auto, 25%, 50%, 100%\n"
             "- RPM readout (if available)\n"
