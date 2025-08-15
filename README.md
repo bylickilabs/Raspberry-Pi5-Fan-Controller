@@ -1,7 +1,7 @@
 # Raspberry Pi 5 Fan Controller
 
-|![Logo](/assets/logo.png)|
-|---|
+|![Logo](/assets/logo.png) | ![Screenshot](20250815_11h03m45s_grim.png)
+|---|---|
 
 ---
 
