@@ -1,4 +1,4 @@
-# Raspberry Pi Fan Controller
+# Raspberry Pi 5 Fan Controller
 
 |![Logo](/assets/logo.png)|
 |---|
