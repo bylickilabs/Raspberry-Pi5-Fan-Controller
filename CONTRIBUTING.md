@@ -23,8 +23,8 @@ sudo apt install -y python3 python3-tk xdg-utils
 **Clone & run:**
 
 ```yarn
-git clone https://github.com/<YOUR_ORG_OR_USER>/<YOUR_REPO>.git
-cd <YOUR_REPO>
+git clone https://github.com/bylickilabs/Raspberry-Pi5-Fan-Controller.git
+cd Raspberry-Pi5-Fan-Controller
 python3 fan.py           # read-only test
 sudo python3 fan.py      # fan control (sysfs writes)
 ```
@@ -125,8 +125,8 @@ sudo apt install -y python3 python3-tk xdg-utils
 ```
 **Klonen & starten:**
 ```bash
-git clone https://github.com/<YOUR_ORG_OR_USER>/<YOUR_REPO>.git
-cd <YOUR_REPO>
+git clone https://github.com/bylickilabs/Raspberry-Pi5-Fan-Controller.git
+cd Raspberry-Pi5-Fan-Controller
 python3 fan.py           # nur Lesen (Test)
 sudo python3 fan.py      # volle Steuerung (Schreibzugriff auf sysfs)
 ```
