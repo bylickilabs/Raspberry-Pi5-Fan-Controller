@@ -3,7 +3,6 @@ from tkinter import ttk, messagebox
 import signal, webbrowser
 from collections import deque
 
-# ================= Settings =================
 OVERLAY_WIDTH = 670
 OVERLAY_HEIGHT = 670
 MIN_WIDTH = 630
@@ -20,7 +19,7 @@ GITHUB_URL = "https://github.com/bylickilabs"
 
 LANG = {
     "de": {
-        "title": "Raspberry Pi - Lueftersteuerung",
+        "title": "Raspberry Pi - Lüftersteuerung",
         "paths": "Erkannte Pfade",
         "lbl_pwm1": "hwmon pwm1:",
         "lbl_pwm1_en": "pwm1_enable:",
@@ -135,7 +134,6 @@ LANG = {
     }
 }
 
-# ================= Utils & Sysfs =================
 def is_root():
     return hasattr(os, "geteuid") and os.geteuid() == 0
 
@@ -168,7 +166,6 @@ def open_url_robust(url):
     except Exception:
         pass
 
-    # Root -> oeffne in User-Session
     try:
         euid = os.geteuid()
     except Exception:
@@ -215,7 +212,6 @@ def open_url_robust(url):
         for exe in ["chromium-browser", "chromium", "firefox"]:
             if shutil.which(exe) and run_user([exe, url]): return True
 
-    # Generische Fallbacks
     try:
         if webbrowser.open(url, new=2):
             return True
@@ -245,7 +241,6 @@ def open_url_robust(url):
         pass
     return False
 
-# ================= Discovery =================
 class HwmonPaths:
     def __init__(self, pwm1, pwm1_enable=None, pwm1_max=None, fan1_input=None):
         self.pwm1 = pwm1
@@ -285,7 +280,6 @@ def find_cooling_device():
             return CoolingPaths(cur, mx)
     return None
 
-# ================= Sensors =================
 def find_temp_sensor_path():
     for pat in ["/sys/class/thermal/thermal_zone*/temp",
                 "/sys/devices/virtual/thermal/thermal_zone*/temp"]:
@@ -343,7 +337,6 @@ def fmt_mb(x):
         return "--"
     return f"{x/1024.0:.1f} GB" if x >= 1024.0 else f"{x:.0f} MB"
 
-# ================= Control logic =================
 def get_pwm_max(hw):
     if hw and hw.pwm1_max:
         try:
@@ -364,7 +357,7 @@ def set_mode_percent(hw, cd, percent):
     ok = False
     if hw:
         if hw.pwm1_enable and os.path.exists(hw.pwm1_enable):
-            s_write(hw.pwm1_enable, "1\n")  # manual
+            s_write(hw.pwm1_enable, "1\n")
         pmax = get_pwm_max(hw)
         duty = max(0, min(int(round(pmax * percent / 100.0)), pmax))
         if s_write(hw.pwm1, f"{duty}\n") or s_write(hw.pwm1, f"{duty}"):
@@ -408,7 +401,6 @@ def read_cooling_state(cd):
         pass
     return None
 
-# ================= GUI =================
 MODES = ["Auto", "25%", "50%", "100%"]
 
 class ScrollableFrame(ttk.Frame):
@@ -494,11 +486,9 @@ class FanApp:
         self.root.protocol("WM_DELETE_WINDOW", self.on_close)
         signal.signal(signal.SIGINT, signal.SIG_DFL)
 
-    # ---- i18n
     def t(self, key):
         return LANG[self.lang].get(key, key)
 
-    # ---- UI build
     def build_ui(self):
         self.root.title(self.t("title"))
         self.root.geometry(f"{OVERLAY_WIDTH}x{OVERLAY_HEIGHT}")
@@ -514,7 +504,6 @@ class FanApp:
         container = self.scroll.inner
         container.grid_columnconfigure(0, weight=1)
 
-        # Toolbar
         bar = ttk.Frame(container, padding=(0, 0, 0, 6))
         bar.grid(row=0, column=0, sticky="ew")
         bar.columnconfigure(0, weight=1)
@@ -527,7 +516,6 @@ class FanApp:
         self.btn_info.grid(row=0, column=2, padx=4)
         self.btn_github.grid(row=0, column=3, padx=4)
 
-        # Paths
         self.lf_paths = ttk.LabelFrame(container, padding=8)
         self.lf_paths.grid(row=1, column=0, sticky="ew")
         self.lf_paths.columnconfigure(1, weight=1)
@@ -546,7 +534,6 @@ class FanApp:
         self.v_cool = ttk.Label(self.lf_paths, text=cd_desc)
         self.k_cool.grid(row=3, column=0, sticky="w"); self.v_cool.grid(row=3, column=1, sticky="w", padx=6)
 
-        # Control (zweizeilig, damit alles sichtbar bleibt)
         self.lf_ctrl = ttk.LabelFrame(container, padding=8)
         self.lf_ctrl.grid(row=2, column=0, sticky="ew", pady=(6, 0))
         for i in range(6):
@@ -573,7 +560,6 @@ class FanApp:
         self.btn_stop.grid(row=1, column=2, sticky="w", pady=(6, 0))
         self.cb_mode.bind("<<ComboboxSelected>>", self.on_mode_change)
 
-        # Metrics
         self.lf_metrics = ttk.LabelFrame(container, padding=8)
         self.lf_metrics.grid(row=3, column=0, sticky="ew", pady=(6, 0))
         for i in range(10):
@@ -594,7 +580,6 @@ class FanApp:
         self.k_freq.grid(row=1, column=3, sticky="e", pady=(6, 0)); self.v_freq.grid(row=1, column=4, sticky="w", pady=(6, 0)); self.u_freq.grid(row=1, column=5, sticky="w", pady=(6, 0))
         self.k_ram.grid(row=1, column=6, sticky="e", pady=(6, 0)); self.v_ram.grid(row=1, column=7, sticky="w", pady=(6, 0))
 
-        # Chart
         self.lf_chart = ttk.LabelFrame(container, padding=8)
         self.lf_chart.grid(row=4, column=0, sticky="nsew", pady=(6, 8))
         container.grid_rowconfigure(4, weight=1)
@@ -606,7 +591,6 @@ class FanApp:
         self.canvas.grid(row=0, column=0, sticky="nsew")
         self.canvas.bind("<Configure>", lambda e: self.draw_chart())
 
-        # Status
         self.lbl_status = ttk.Label(container)
         self.lbl_status.grid(row=5, column=0, sticky="w", pady=(0, 6))
 
@@ -648,7 +632,6 @@ class FanApp:
         t = LANG[self.lang]
         InfoDialog(self.root, t["info_title"], t["info_text"], t["info_btn_close"])
 
-    # ---- Control / Metrics
     def parse_interval(self):
         s = self.var_int.get().strip()
         try:
@@ -689,13 +672,11 @@ class FanApp:
         return ok
 
     def refresh_all(self):
-        # PWM / Cooling / RPM
         self.v_pwm.configure(text=str(read_pwm_value(self.hw)) if self.hw else "--")
         self.v_cd.configure(text=str(read_cooling_state(self.cd)) if self.cd else "--")
         rpm = read_rpm(self.hw)
         self.v_rpm.configure(text=str(rpm) if rpm is not None else "--")
 
-        # Temperatur
         temp = read_temp_c(self.sensor) if self.sensor else None
         if temp is not None:
             self.v_temp.configure(text=f"{temp:.1f}")
@@ -705,15 +686,12 @@ class FanApp:
         else:
             self.v_temp.configure(text="--")
 
-        # CPU-Frequenz
         mhz = read_cpu_freq_mhz(self.freq_path)
         self.v_freq.configure(text=f"{mhz:.0f}" if mhz is not None else "--")
 
-        # RAM
         used, total = read_mem_used_total_mb()
         self.v_ram.configure(text=(f"{fmt_mb(used)} / {fmt_mb(total)}" if used is not None else "--"))
 
-        # Chart
         self.draw_chart()
 
     def apply_once(self):
@@ -735,7 +713,7 @@ class FanApp:
         self.btn_start.configure(state="disabled")
         self.btn_stop.configure(state="normal")
         self.lbl_status.configure(text=self.t("status_run"))
-        self.refresh_all()  # sofort zeichnen
+        self.refresh_all()
         self.tick()
 
     def stop(self):
@@ -748,7 +726,6 @@ class FanApp:
         self.stop()
         self.root.destroy()
 
-    # ---- Chart
     def draw_chart(self):
         c = self.canvas
         w = int(c.winfo_width())
@@ -797,7 +774,6 @@ class FanApp:
                 px, py = x, y
             c.create_oval(px - 3, py - 3, px + 3, py + 3, fill="#0077cc", outline="")
 
-# ================= Main =================
 def main():
     root = tk.Tk()
     FanApp(root)
