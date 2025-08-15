@@ -95,6 +95,7 @@ Do not post secrets or sensitive paths. If you discover a security issue, contac
 
 ### 11) License
 By contributing, you agree that your contributions will be licensed under the project's license.
+[LICENSE](LICENSE)
 
 <br>
 
@@ -191,3 +192,4 @@ Keine sensiblen Daten posten. Sicherheitsfunde privat an den Maintainer melden.
 
 ### 11) Lizenz
 Mit deinem Beitrag stimmst du zu, dass er unter der Projektlizenz veröffentlicht wird.
+[LICENSE](LICENSE)
