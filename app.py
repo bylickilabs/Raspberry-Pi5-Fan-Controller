@@ -19,7 +19,7 @@ GITHUB_URL = "https://github.com/bylickilabs"
 
 LANG = {
     "de": {
-        "title": "Raspberry Pi - Lüftersteuerung",
+        "title": "Raspberry Pi 5 - Lüftersteuerung",
         "paths": "Erkannte Pfade",
         "lbl_pwm1": "hwmon pwm1:",
         "lbl_pwm1_en": "pwm1_enable:",
@@ -76,7 +76,7 @@ LANG = {
         "err_no_paths": "Warnung: Weder hwmon noch cooling_device gefunden."
     },
     "en": {
-        "title": "Raspberry Pi - Fan Controller",
+        "title": "Raspberry Pi 5 - Fan Controller",
         "paths": "Detected Paths",
         "lbl_pwm1": "hwmon pwm1:",
         "lbl_pwm1_en": "pwm1_enable:",
